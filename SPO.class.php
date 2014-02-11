@@ -6,7 +6,7 @@
 	No other edits to your PHP systems!
 	Just make sure you have this class loaded as first (above anything else!)
 	
-	© Ramon Smit - Daltcore Solutions
+	© Ramon Smit - DALTCORE/solutions
 	SPO - SecurityPriorityOne - 2013
 
 */
@@ -22,6 +22,12 @@ class SPO{
 		}
 		if(!empty($_COOKIE)){
 			self::secureCOOKIE();
+		}
+		if(!empty($_REQUEST)){
+			self::secureREQUEST();
+		}
+		if(!empty($_SERVER)){
+			self::secureSERVER();
 		}
 	}
 	
@@ -59,6 +65,28 @@ class SPO{
 		}
 	}
 	
+	private function secureREQUEST(){
+		$input_arr = array();
+		foreach ($_REQUEST as $key => $input_arr) {
+			if(is_array($input_arr)){       
+				$_REQUEST[$key] = self::addslashes_array($input_arr);
+			}else{
+				$_REQUEST[$key] = self::makesave($input_arr);
+			}   
+		}
+	}
+	
+	private function secureSERVER(){
+		$input_arr = array();
+		foreach ($_SERVER as $key => $input_arr) {
+			if(is_array($input_arr)){       
+				$_SERVER[$key] = self::addslashes_array($input_arr);
+			}else{
+				$_SERVER[$key] = self::makesave($input_arr);
+			}   
+		}
+	}
+	
 	private function addslashes_array($input_arr){
 		if(is_array($input_arr)){
 			$tmp = array();
@@ -71,10 +99,11 @@ class SPO{
 		}
 	}
 	
-	private function makesave($input){
+	public function makesave($input){ 
 		$search = array("\\",  "\x00", "\n",  "\r",  "'",  '"', "\x1a");
     	$replace = array("\\\\","\\0","\\n", "\\r", "\'", '\"', "\\Z");
 		$output = str_replace($search, $replace, $input);
+        $output = preg_replace('/[^\r\n\t\x20-\x7E\xA0-\xFF]/', '', $output); 
 		return $output;
 	}
 
