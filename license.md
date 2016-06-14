@@ -1,4 +1,4 @@
-Copyright (c) 2016, Ramon J. A. Smit
+Copyright (c) 2013 - 2016, Ramon J. A. Smit
 
 Permission to use, copy, modify, and/or distribute this software for any
 purpose with or without fee is hereby granted, provided that the above
